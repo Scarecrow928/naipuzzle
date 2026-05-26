@@ -1,0 +1,118 @@
+import type { NailongImage } from './types'
+
+const B = import.meta.env.BASE_URL
+
+export const nailongPresets: NailongImage[] = [
+  {
+    displayName: 'nailong',
+    imageUrl: `${B}assets/default.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/150D0799-39E8-43AD-B3D5-6028C9B8F0F1.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/DFDFAD4B-502F-46AE-8804-C66001BCAB88.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5459.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5552.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5555.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5564.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5568.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5570.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5576.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5577.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5578.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5579.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5580.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/IMG_5583.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+  {
+    displayName: '',
+    imageUrl: `${B}assets/laugh001.webp`,
+    description: '',
+    animationUrl: '',
+    audioUrl: '',
+  },
+]

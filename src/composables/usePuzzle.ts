@@ -1,12 +1,20 @@
 import { ref, computed } from 'vue'
 import { shuffleScatter } from '../utils/shuffle'
 import { isSolved } from '../utils/puzzleMath'
-import type { PuzzleAPI, GamePhase, HeldPiece } from '../types'
+import type { PuzzleAPI, GamePhase, HeldPiece, NailongImage } from '../types'
 
 export const GameState: { MENU: GamePhase; PLAYING: GamePhase; WIN: GamePhase } = {
   MENU: 'MENU',
   PLAYING: 'PLAYING',
   WIN: 'WIN',
+}
+
+const defaultNailongImage: NailongImage = {
+  displayName: '',
+  imageUrl: '',
+  description: '',
+  animationUrl: '',
+  audioUrl: '',
 }
 
 export function usePuzzle(): PuzzleAPI {
@@ -16,7 +24,7 @@ export function usePuzzle(): PuzzleAPI {
   const grid = ref<(number | null)[]>([])
   const basket = ref<number[]>([])
   const heldPiece = ref<HeldPiece | null>(null)
-  const imageUrl = ref('')
+  const currentImage = ref<NailongImage>({ ...defaultNailongImage })
   const imageRatio = ref(1)
   const moves = ref(0)
   const hasStarted = ref(false)
@@ -25,10 +33,10 @@ export function usePuzzle(): PuzzleAPI {
 
   const totalCells = computed(() => gridColumns.value * gridRows.value)
 
-  function startGame(columns: number, rows: number, imgUrl: string, imgRatio: number) {
+  function startGame(columns: number, rows: number, image: NailongImage, imgRatio: number) {
     gridColumns.value = columns
     gridRows.value = rows
-    imageUrl.value = imgUrl
+    currentImage.value = image
     imageRatio.value = imgRatio
     const scattered = shuffleScatter(columns, rows)
     grid.value = [...scattered]
@@ -151,7 +159,7 @@ export function usePuzzle(): PuzzleAPI {
     grid,
     basket,
     heldPiece,
-    imageUrl,
+    currentImage,
     imageRatio,
     moves,
     hasStarted,

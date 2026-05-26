@@ -17,10 +17,18 @@ export interface ImageLoadResult {
   ratio: number
 }
 
+export interface NailongImage {
+  displayName: string
+  imageUrl: string
+  description: string
+  animationUrl: string
+  audioUrl: string
+}
+
 export interface StartGamePayload {
   columns: number
   rows: number
-  imageUrl: string
+  nailong: NailongImage
   imageRatio: number
 }
 
@@ -32,12 +40,12 @@ export interface PuzzleAPI {
   grid: Ref<(number | null)[]>
   basket: Ref<number[]>
   heldPiece: Ref<HeldPiece | null>
-  imageUrl: Ref<string>
+  currentImage: Ref<NailongImage>
   imageRatio: Ref<number>
   moves: Ref<number>
   hasStarted: Ref<boolean>
   totalCells: ComputedRef<number>
-  startGame: (columns: number, rows: number, imgUrl: string, imgRatio: number) => void
+  startGame: (columns: number, rows: number, image: NailongImage, imgRatio: number) => void
   restart: () => void
   backToMenu: () => void
   pickUpFromGrid: (pos: number) => void

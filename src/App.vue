@@ -44,8 +44,8 @@ watch(puzzle.gameState, (state) => {
   }
 })
 
-function handleStart({ columns, rows, imageUrl, imageRatio }: StartGamePayload) {
-  puzzle.startGame(columns, rows, imageUrl, imageRatio)
+function handleStart({ columns, rows, nailong, imageRatio }: StartGamePayload) {
+  puzzle.startGame(columns, rows, nailong, imageRatio)
 }
 
 function handleRestart() {
@@ -63,7 +63,8 @@ function handleCancelHold() {
 }
 
 const dragCloneStyle = computed(() => {
-  if (!drag.isDragging.value || !puzzle.heldPiece.value || !puzzle.imageUrl.value) return {}
+  const imgUrl = puzzle.currentImage.value.imageUrl
+  if (!drag.isDragging.value || !puzzle.heldPiece.value || !imgUrl) return {}
   const pieceId = puzzle.heldPiece.value.pieceId
   const cols = puzzle.gridColumns.value
   const rows = puzzle.gridRows.value
@@ -73,7 +74,7 @@ const dragCloneStyle = computed(() => {
   return {
     left: drag.dragPosition.value.x + 'px',
     top: drag.dragPosition.value.y + 'px',
-    backgroundImage: `url(${puzzle.imageUrl.value})`,
+    backgroundImage: `url(${imgUrl})`,
     backgroundSize: `${cols * 100}% ${rows * 100}%`,
     backgroundPosition: `${pctX}% ${pctY}%`,
   }
@@ -92,7 +93,7 @@ const dragCloneStyle = computed(() => {
         :elapsedSeconds="timer.elapsedSeconds.value"
         :moves="puzzle.moves.value"
         :heldPiece="puzzle.heldPiece.value"
-        :imageUrl="puzzle.imageUrl.value"
+        :currentImage="puzzle.currentImage.value"
         :gridColumns="puzzle.gridColumns.value"
         :gridRows="puzzle.gridRows.value"
         :isDragging="drag.isDragging.value"
@@ -105,7 +106,7 @@ const dragCloneStyle = computed(() => {
           :grid="puzzle.grid.value"
           :gridColumns="puzzle.gridColumns.value"
           :gridRows="puzzle.gridRows.value"
-          :imageUrl="puzzle.imageUrl.value"
+          :imageUrl="puzzle.currentImage.value.imageUrl"
           :imageRatio="puzzle.imageRatio.value"
           :heldPiece="puzzle.heldPiece.value"
         />
@@ -114,7 +115,7 @@ const dragCloneStyle = computed(() => {
         :basket="puzzle.basket.value"
         :gridColumns="puzzle.gridColumns.value"
         :gridRows="puzzle.gridRows.value"
-        :imageUrl="puzzle.imageUrl.value"
+        :imageUrl="puzzle.currentImage.value.imageUrl"
         :heldPiece="puzzle.heldPiece.value"
       />
     </template>
@@ -123,6 +124,7 @@ const dragCloneStyle = computed(() => {
       v-if="puzzle.gameState.value === puzzle.GameState.WIN"
       :elapsedSeconds="timer.elapsedSeconds.value"
       :moves="puzzle.moves.value"
+      :currentImage="puzzle.currentImage.value"
       @back-to-menu="handleBackToMenu"
     />
   </div>

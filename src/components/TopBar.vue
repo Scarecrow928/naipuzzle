@@ -2,13 +2,13 @@
 import { ref } from 'vue'
 import { formatTime } from '../utils/format'
 import { gridIndexToRowCol } from '../utils/puzzleMath'
-import type { HeldPiece } from '../types'
+import type { HeldPiece, NailongImage } from '../types'
 
 const props = defineProps<{
   elapsedSeconds: number
   moves: number
   heldPiece: HeldPiece | null
-  imageUrl: string
+  currentImage: NailongImage
   gridColumns: number
   gridRows: number
   isDragging?: boolean
@@ -36,7 +36,7 @@ function cancelBack() {
 }
 
 function heldPieceStyle() {
-  if (!props.heldPiece || !props.imageUrl) return {}
+  if (!props.heldPiece || !props.currentImage.imageUrl) return {}
   const pieceId = props.heldPiece.pieceId
   const cols = props.gridColumns
   const rows = props.gridRows
@@ -44,7 +44,7 @@ function heldPieceStyle() {
   const pctX = (col / (cols - 1)) * 100
   const pctY = (row / (rows - 1)) * 100
   return {
-    backgroundImage: `url(${props.imageUrl})`,
+    backgroundImage: `url(${props.currentImage.imageUrl})`,
     backgroundSize: `${cols * 100}% ${rows * 100}%`,
     backgroundPosition: `${pctX}% ${pctY}%`,
   }
@@ -53,18 +53,19 @@ function heldPieceStyle() {
 <template>
   <div class="top-bar">
     <div class="top-bar-inner">
+      <span v-if="currentImage.displayName" class="image-name">{{ currentImage.displayName }}</span>
       <div class="stat">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <span>{{ formatTime(elapsedSeconds) }}</span>
       </div>
       <div class="stat">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
         <span>{{ moves }} moves</span>
       </div>
       <div v-if="heldPiece" class="held-indicator">
         <div class="held-thumb" :style="heldPieceStyle()"></div>
         <span v-if="isDragging" class="held-label dragging">Dragging...</span>
-        <span v-else class="held-label">Place piece {{ heldPiece.pieceId }}</span>
+        <span v-else class="held-label">Pc {{ heldPiece.pieceId }}</span>
         <button v-if="!isDragging" class="btn btn-ghost btn-xs" @click="$emit('cancel-hold')">Cancel</button>
       </div>
       <div class="actions">
@@ -97,23 +98,28 @@ function heldPieceStyle() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
   max-width: 500px;
   margin: 0 auto;
-  padding: 8px 16px;
+  padding: 6px 12px;
   background: rgba(var(--color-bg-rgb), var(--panel-opacity));
   backdrop-filter: blur(var(--panel-blur));
   -webkit-backdrop-filter: blur(var(--panel-blur));
   border-radius: var(--radius);
   border: 1px solid rgba(255,255,255,0.08);
-  flex-wrap: wrap;
+}
+.image-name {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  font-weight: 500;
+  white-space: nowrap;
 }
 .stat {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   color: var(--color-text-dim);
-  font-size: 14px;
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
 .stat span {
@@ -123,16 +129,16 @@ function heldPieceStyle() {
 .held-indicator {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 .held-thumb {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 4px;
   flex-shrink: 0;
 }
 .held-label {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--color-primary);
   font-weight: 600;
   white-space: nowrap;
@@ -142,15 +148,15 @@ function heldPieceStyle() {
 }
 .actions {
   display: flex;
-  gap: 6px;
+  gap: 4px;
 }
 .btn-xs {
-  padding: 4px 10px;
-  font-size: 12px;
+  padding: 3px 8px;
+  font-size: 11px;
 }
 .btn-sm {
-  padding: 6px 12px;
-  font-size: 13px;
+  padding: 4px 10px;
+  font-size: 12px;
 }
 .confirm-overlay {
   position: fixed;

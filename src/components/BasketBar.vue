@@ -13,7 +13,7 @@ const props = defineProps<{
   heldPiece: HeldPiece | null
 }>()
 
-const expanded = ref(false)
+const expanded = ref(true)
 
 const count = computed(() => props.basket.length)
 
@@ -24,7 +24,6 @@ const isBasketHovered = computed(() => {
 
 function handleBasketPiecePointerDown(pieceId: number, event: PointerEvent) {
   drag?.onBasketPiecePointerDown(pieceId, event)
-  expanded.value = false
 }
 
 function toggle() {

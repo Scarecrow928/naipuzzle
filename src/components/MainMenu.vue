@@ -2,7 +2,8 @@
 import { ref } from 'vue'
 import { loadImageFromFile, loadImageFromURL } from '../utils/imageLoader'
 import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '../config'
-import type { StartGamePayload } from '../types'
+import { nailongPresets } from '../presets'
+import type { StartGamePayload, NailongImage } from '../types'
 
 const emit = defineEmits<{
   start: [payload: StartGamePayload]
@@ -14,7 +15,7 @@ const customMode = ref(false)
 const customCols = ref(4)
 const customRows = ref(4)
 const customError = ref('')
-const imageMode = ref('default')
+const imageMode = ref('preset')
 const imageFile = ref<File | null>(null)
 const imageUrl = ref('')
 const errorMsg = ref('')
@@ -54,6 +55,14 @@ function getGridSize() {
   return { cols: selectedCols.value, rows: selectedRows.value }
 }
 
+function randomPick(presets: NailongImage[]): NailongImage {
+  return presets[Math.floor(Math.random() * presets.length)]
+}
+
+function makeImage(url: string): NailongImage {
+  return { displayName: '', imageUrl: url, description: '', animationUrl: '', audioUrl: '' }
+}
+
 function onFileChange(e: Event) {
   const target = e.target as HTMLInputElement
   imageFile.value = target.files?.[0] || null
@@ -76,24 +85,25 @@ async function handleStart() {
   loading.value = true
 
   try {
-    let imgUrl = ''
+    let nailong: NailongImage
     let ratio = 1
 
     if (imageMode.value === 'file' && imageFile.value) {
       const result = await loadImageFromFile(imageFile.value)
-      imgUrl = result.url
       ratio = result.ratio
+      nailong = makeImage(result.url)
     } else if (imageMode.value === 'url' && imageUrl.value.trim()) {
       const result = await loadImageFromURL(imageUrl.value.trim())
-      imgUrl = result.url
       ratio = result.ratio
+      nailong = makeImage(result.url)
     } else {
-      const result = await loadImageFromURL(`${import.meta.env.BASE_URL}assets/default.jpg`)
-      imgUrl = result.url
+      nailong = randomPick(nailongPresets)
+      const result = await loadImageFromURL(nailong.imageUrl)
       ratio = result.ratio
+      nailong = { ...nailong, imageUrl: result.url }
     }
 
-    emit('start', { columns: cols, rows, imageUrl: imgUrl, imageRatio: ratio })
+    emit('start', { columns: cols, rows, nailong, imageRatio: ratio })
   } catch (err) {
     errorMsg.value = (err as Error).message
   } finally {
@@ -105,7 +115,6 @@ async function handleStart() {
   <div class="main-menu animate-fade-in">
     <div class="menu-card">
       <h1 class="title">naipuzzle</h1>
-      <p class="subtitle">Help nailong</p>
 
       <div class="menu-section">
         <label class="menu-label">Grid Size</label>
@@ -154,9 +163,9 @@ async function handleStart() {
         <div class="source-tabs">
           <button
             class="source-tab"
-            :class="{ active: imageMode === 'default' }"
-            @click="imageMode = 'default'"
-          >Default</button>
+            :class="{ active: imageMode === 'preset' }"
+            @click="imageMode = 'preset'"
+          >Preset</button>
           <button
             class="source-tab"
             :class="{ active: imageMode === 'url' }"

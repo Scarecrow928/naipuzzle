@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { formatTime } from '../utils/format'
+import type { NailongImage } from '../types'
 
 defineProps<{
   elapsedSeconds: number
   moves: number
+  currentImage: NailongImage
 }>()
 
 defineEmits<{
@@ -19,12 +21,14 @@ onMounted(() => {
   <div class="win-overlay animate-fade-in">
     <div class="win-glow animate-win-pulse"></div>
     <div class="win-card animate-fade-in-scale">
-      <div class="win-icon">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-      </div>
+      <img
+        v-if="currentImage.imageUrl"
+        class="win-image"
+        :src="currentImage.imageUrl"
+        alt="Completed puzzle"
+      />
       <h2 class="win-title">Completed!</h2>
+      <p v-if="currentImage.displayName" class="win-name">{{ currentImage.displayName }}</p>
       <div class="win-stats">
         <div class="win-stat">
           <span class="win-stat-label">Time</span>
@@ -47,7 +51,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.5);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -62,25 +66,36 @@ onMounted(() => {
   background: rgba(var(--color-bg-rgb), 0.9);
   border: 1px solid rgba(255,255,255,0.12);
   border-radius: var(--radius);
-  padding: 40px 32px;
+  padding: 32px;
   text-align: center;
-  min-width: 280px;
+  max-width: 360px;
+  width: 90%;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
 }
-.win-icon {
-  margin-bottom: 16px;
+.win-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 .win-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--color-text);
-  margin-bottom: 24px;
+  margin-bottom: 4px;
+}
+.win-name {
+  font-size: 14px;
+  color: var(--color-text-dim);
+  margin-bottom: 20px;
 }
 .win-stats {
   display: flex;
   gap: 32px;
   justify-content: center;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 .win-stat {
   display: flex;
