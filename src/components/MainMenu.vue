@@ -6,7 +6,6 @@ import type { StartGamePayload } from '../types'
 
 const emit = defineEmits<{
   start: [payload: StartGamePayload]
-  'open-theme': []
 }>()
 
 const selectedCols = ref(4)
@@ -191,10 +190,6 @@ async function handleStart() {
 
       <button class="btn btn-primary btn-lg btn-full" :disabled="loading" @click="handleStart">
         {{ loading ? 'Loading...' : 'Start Game' }}
-      </button>
-
-      <button class="btn btn-ghost btn-full mt-3" @click="$emit('open-theme')">
-        Theme Settings
       </button>
     </div>
   </div>

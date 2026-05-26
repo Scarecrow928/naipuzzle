@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, provide } from 'vue'
+import { computed, watch, onMounted, provide } from 'vue'
 import { usePuzzle } from './composables/usePuzzle'
 import { useTimer } from './composables/useTimer'
 import { useTheme } from './composables/useTheme'
@@ -13,15 +13,12 @@ import TopBar from './components/TopBar.vue'
 import PuzzleBoard from './components/PuzzleBoard.vue'
 import BasketBar from './components/BasketBar.vue'
 import WinOverlay from './components/WinOverlay.vue'
-import ThemePanel from './components/ThemePanel.vue'
 
 const puzzle = usePuzzle()
 const timer = useTimer()
 const theme = useTheme()
 const audio = useAudio()
 const drag = useDragDrop(puzzle)
-
-const showTheme = ref(false)
 
 provide(ThemeKey, theme)
 provide(DragKey, drag)
@@ -88,7 +85,6 @@ const dragCloneStyle = computed(() => {
     <MainMenu
       v-if="puzzle.gameState.value === puzzle.GameState.MENU"
       @start="handleStart"
-      @open-theme="showTheme = true"
     />
 
     <template v-if="puzzle.gameState.value === puzzle.GameState.PLAYING || puzzle.gameState.value === puzzle.GameState.WIN">
@@ -128,11 +124,6 @@ const dragCloneStyle = computed(() => {
       :elapsedSeconds="timer.elapsedSeconds.value"
       :moves="puzzle.moves.value"
       @back-to-menu="handleBackToMenu"
-    />
-
-    <ThemePanel
-      v-if="showTheme"
-      @close="showTheme = false"
     />
   </div>
 

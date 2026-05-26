@@ -96,7 +96,7 @@ const presets: Record<string, Record<string, string>> = {
 }
 
 export function useTheme(): ThemeAPI {
-  const currentPreset = ref('dark')
+  const currentPreset = ref('nailong')
   const customBgImage = ref('')
 
   function applyPreset(name: string) {
@@ -125,7 +125,7 @@ export function useTheme(): ThemeAPI {
   }
 
   function init() {
-    applyPreset('dark')
+    applyPreset('nailong')
   }
 
   return {
