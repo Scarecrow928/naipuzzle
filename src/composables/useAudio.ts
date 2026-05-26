@@ -11,7 +11,7 @@ export function useAudio(): AudioAPI {
   function playWin() {
     if (muted.value) return
     try {
-      const audio = new Audio('/assets/win.mp3')
+      const audio = new Audio(`${import.meta.env.BASE_URL}assets/win.mp3`)
       audio.volume = 0.6
       audio.play().catch(() => {})
     } catch {}

@@ -89,7 +89,7 @@ async function handleStart() {
       imgUrl = result.url
       ratio = result.ratio
     } else {
-      const result = await loadImageFromURL('/assets/default.jpg')
+      const result = await loadImageFromURL(`${import.meta.env.BASE_URL}assets/default.jpg`)
       imgUrl = result.url
       ratio = result.ratio
     }
