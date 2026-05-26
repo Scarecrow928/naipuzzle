@@ -1,0 +1,29 @@
+:root {
+  --color-primary: #6366f1;
+  --color-primary-rgb: 99, 102, 241;
+  --color-secondary: #a78bfa;
+  --color-secondary-rgb: 167, 139, 250;
+  --color-bg: #0f0f14;
+  --color-bg-rgb: 15, 15, 20;
+  --color-surface: rgba(255, 255, 255, 0.08);
+  --color-surface-hover: rgba(255, 255, 255, 0.12);
+  --color-text: #f1f1f3;
+  --color-text-dim: rgba(255, 255, 255, 0.6);
+  --color-success: #34d399;
+  --color-error: #f87171;
+  --panel-opacity: 0.15;
+  --panel-blur: 20px;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --tile-gap: 4px;
+  --tile-radius: 6px;
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+.bg-surface {
+  background: rgba(var(--color-bg-rgb), var(--panel-opacity));
+  backdrop-filter: blur(var(--panel-blur));
+  -webkit-backdrop-filter: blur(var(--panel-blur));
+}
