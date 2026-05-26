@@ -2,6 +2,29 @@ import { ref, type Ref } from 'vue'
 import type { ThemeAPI } from '../types'
 
 const presets: Record<string, Record<string, string>> = {
+  nailong: {
+    '--color-primary': '#c68d2f',
+    '--color-primary-rgb': '198, 141, 47',
+
+    '--color-secondary': '#775a20',
+    '--color-secondary-rgb': '119, 90, 32',
+
+    '--color-bg': '#ebce79',
+    '--color-bg-rgb': '235, 206, 121',
+
+    '--color-surface': 'rgba(255, 255, 255, 0.7)',
+    '--color-surface-hover': 'rgba(255, 255, 255, 0.9)',
+
+    '--color-text': '#0a0e00',
+    '--color-text-dim': 'rgba(10, 14, 0, 0.8)',
+
+    '--color-success': '#2ecc71',
+    '--color-error': '#e74c3c',
+
+    '--panel-opacity': '0.85',
+    '--panel-blur': '10px',
+    '--bg-image': 'none',
+  },
   dark: {
     '--color-primary': '#6366f1',
     '--color-primary-rgb': '99, 102, 241',

@@ -106,7 +106,7 @@ async function handleStart() {
   <div class="main-menu animate-fade-in">
     <div class="menu-card">
       <h1 class="title">naipuzzle</h1>
-      <p class="subtitle">Sliding Puzzle Game</p>
+      <p class="subtitle">Help nailong</p>
 
       <div class="menu-section">
         <label class="menu-label">Grid Size</label>
