@@ -37,7 +37,7 @@ watch(puzzle.hasStarted, (started) => {
 watch(puzzle.gameState, (state) => {
   if (state === puzzle.GameState.WIN) {
     timer.running.value = false
-    audio.playWin()
+    audio.playWin(puzzle.currentImage.value.audioUrl)
   }
   if (state === puzzle.GameState.MENU) {
     timer.reset()
@@ -54,6 +54,7 @@ function handleRestart() {
 }
 
 function handleBackToMenu() {
+  audio.stopWin()
   puzzle.backToMenu()
   timer.reset()
 }

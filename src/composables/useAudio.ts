@@ -2,20 +2,32 @@ import { ref, type Ref } from 'vue'
 
 export interface AudioAPI {
   muted: Ref<boolean>
-  playWin: () => void
+  playWin: (audioUrl: string) => void
+  stopWin: () => void
 }
 
 export function useAudio(): AudioAPI {
   const muted = ref(false)
+  let currentAudio: HTMLAudioElement | null = null
 
-  function playWin() {
-    if (muted.value) return
+  function playWin(audioUrl: string) {
+    if (muted.value || !audioUrl) return
+    stopWin()
     try {
-      const audio = new Audio(`${import.meta.env.BASE_URL}assets/win.mp3`)
-      audio.volume = 0.6
-      audio.play().catch(() => {})
+      currentAudio = new Audio(audioUrl)
+      currentAudio.volume = 0.6
+      currentAudio.onended = () => { currentAudio = null }
+      currentAudio.play().catch(() => { currentAudio = null })
     } catch {}
   }
 
-  return { muted, playWin }
+  function stopWin() {
+    if (currentAudio) {
+      currentAudio.pause()
+      currentAudio.currentTime = 0
+      currentAudio = null
+    }
+  }
+
+  return { muted, playWin, stopWin }
 }
