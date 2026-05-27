@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { inject, computed } from 'vue'
-import { DragKey, type HeldPiece, type DragDropAPI } from '../types'
+import { DragKey, type HeldPiece, type NailongImage, type DragDropAPI } from '../types'
 import PuzzleTile from './PuzzleTile.vue'
 
 const drag = inject<DragDropAPI>(DragKey)
@@ -9,7 +9,7 @@ const props = defineProps<{
   grid: (number | null)[]
   gridColumns: number
   gridRows: number
-  imageUrl: string
+  nailong: NailongImage
   imageRatio: number
   heldPiece: HeldPiece | null
 }>()
@@ -38,7 +38,7 @@ const dropTargetIndex = computed(() => {
       :index="index"
       :gridColumns="gridColumns"
       :gridRows="gridRows"
-      :imageUrl="imageUrl"
+      :imageUrl="nailong.imageUrl"
       :isEmpty="value == null"
       :isSource="heldPiece?.fromGridIndex === index"
       :isDropTarget="dropTargetIndex === index"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { loadImageFromFile, loadImageFromURL } from '../utils/imageLoader'
+import { loadImageFromFile } from '../utils/imageLoader'
 import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '../config'
 import { nailongPresets } from '../presets'
 import type { StartGamePayload, NailongImage } from '../types'
@@ -86,21 +86,16 @@ async function handleStart() {
 
   try {
     let nailong: NailongImage
-    let ratio = 1
+    let ratio = 0
 
     if (imageMode.value === 'file' && imageFile.value) {
       const result = await loadImageFromFile(imageFile.value)
       ratio = result.ratio
       nailong = makeImage(result.url)
     } else if (imageMode.value === 'url' && imageUrl.value.trim()) {
-      const result = await loadImageFromURL(imageUrl.value.trim())
-      ratio = result.ratio
-      nailong = makeImage(result.url)
+      nailong = makeImage(imageUrl.value.trim())
     } else {
       nailong = randomPick(nailongPresets)
-      const result = await loadImageFromURL(nailong.imageUrl)
-      ratio = result.ratio
-      nailong = { ...nailong, imageUrl: result.url }
     }
 
     emit('start', { columns: cols, rows, nailong, imageRatio: ratio })

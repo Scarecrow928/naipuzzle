@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, watch, onMounted, provide } from 'vue'
+import { ref, computed, watch, onMounted, provide } from 'vue'
 import { usePuzzle } from './composables/usePuzzle'
 import { useTimer } from './composables/useTimer'
 import { useTheme } from './composables/useTheme'
 import { useAudio } from './composables/useAudio'
 import { useDragDrop } from './composables/useDragDrop'
+import { loadImageFromURL } from './utils/imageLoader'
 import { gridIndexToRowCol } from './utils/puzzleMath'
 import { ThemeKey, DragKey, type StartGamePayload } from './types'
 import BackgroundLayer from './components/BackgroundLayer.vue'
@@ -37,15 +38,30 @@ watch(puzzle.hasStarted, (started) => {
 watch(puzzle.gameState, (state) => {
   if (state === puzzle.GameState.WIN) {
     timer.running.value = false
-    audio.playWin(puzzle.currentImage.value.audioUrl)
+    audio.playWin()
   }
   if (state === puzzle.GameState.MENU) {
     timer.reset()
   }
 })
 
-function handleStart({ columns, rows, nailong, imageRatio }: StartGamePayload) {
-  puzzle.startGame(columns, rows, nailong, imageRatio)
+async function handleStart({ columns, rows, nailong, imageRatio }: StartGamePayload) {
+  try {
+    let ratio = imageRatio
+    let loadedNailong = nailong
+
+    if (ratio === 0 && nailong.imageUrl) {
+      const result = await loadImageFromURL(nailong.imageUrl)
+      ratio = result.ratio
+      loadedNailong = { ...nailong, imageUrl: result.url }
+    }
+
+    await audio.preloadWin(loadedNailong.audioUrl).catch(() => {})
+
+    puzzle.startGame(columns, rows, loadedNailong, ratio)
+  } catch (err) {
+    alert((err as Error).message || 'Failed to load image')
+  }
 }
 
 function handleRestart() {
@@ -107,7 +123,7 @@ const dragCloneStyle = computed(() => {
           :grid="puzzle.grid.value"
           :gridColumns="puzzle.gridColumns.value"
           :gridRows="puzzle.gridRows.value"
-          :imageUrl="puzzle.currentImage.value.imageUrl"
+          :nailong="puzzle.currentImage.value"
           :imageRatio="puzzle.imageRatio.value"
           :heldPiece="puzzle.heldPiece.value"
         />
