@@ -21,7 +21,6 @@ export interface NailongImage {
   displayName: string
   imageUrl: string
   description: string
-  animationUrl: string
   audioUrl: string
 }
 

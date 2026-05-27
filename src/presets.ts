@@ -5,7 +5,6 @@ const B = import.meta.env.BASE_URL
 const D: Omit<NailongImage, 'imageUrl'> = {
   displayName: '',
   description: '',
-  animationUrl: '',
   audioUrl: `${B}assets/laugh.m4a`,
 }
 

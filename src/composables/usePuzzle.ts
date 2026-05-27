@@ -13,7 +13,6 @@ const defaultNailongImage: NailongImage = {
   displayName: '',
   imageUrl: '',
   description: '',
-  animationUrl: '',
   audioUrl: '',
 }
 

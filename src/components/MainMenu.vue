@@ -60,7 +60,7 @@ function randomPick(presets: NailongImage[]): NailongImage {
 }
 
 function makeImage(url: string): NailongImage {
-  return { displayName: '', imageUrl: url, description: '', animationUrl: '', audioUrl: '' }
+  return { displayName: '', imageUrl: url, description: '', audioUrl: '' }
 }
 
 function onFileChange(e: Event) {
