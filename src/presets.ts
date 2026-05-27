@@ -26,4 +26,5 @@ export const nailongPresets: NailongImage[] = [
   { ...D, imageUrl: `${B}assets/IMG_5580.webp` },
   { ...D, imageUrl: `${B}assets/IMG_5583.webp` },
   { ...D, imageUrl: `${B}assets/laugh001.webp` },
+  { ...D, imageUrl: `${B}assets/laugh002.webp` },
 ]
