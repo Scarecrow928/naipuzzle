@@ -15,6 +15,7 @@ export function useAudio(): AudioAPI {
   let bgmBuffer: AudioBuffer | null = null
   let winBuffer: AudioBuffer | null = null
   let bgmTimer: ReturnType<typeof setTimeout> | null = null
+  let bgmSource: AudioBufferSourceNode | null = null
   let loaded = false
 
   function getContext(): AudioContext {
@@ -59,11 +60,14 @@ export function useAudio(): AudioAPI {
   function playBgm() {
     if (!bgmBuffer || muted.value || !audioContext) return
     try {
+      if (bgmSource) { try { bgmSource.stop() } catch {} bgmSource = null }
       const source = audioContext.createBufferSource()
       source.buffer = bgmBuffer
       source.connect(audioContext.destination)
       source.start(0)
+      bgmSource = source
       source.onended = () => {
+        bgmSource = null
         if (!muted.value) {
           bgmTimer = setTimeout(playBgm, 1000)
         }
@@ -75,6 +79,10 @@ export function useAudio(): AudioAPI {
     if (bgmTimer) {
       clearTimeout(bgmTimer)
       bgmTimer = null
+    }
+    if (bgmSource) {
+      try { bgmSource.stop() } catch {}
+      bgmSource = null
     }
   }
 
