@@ -68,7 +68,7 @@ function handleRestart() {
 }
 
 function handleBackToMenu() {
-  audio.stopAll()
+  audio.stopWin()
   puzzle.backToMenu()
   timer.reset()
 }
