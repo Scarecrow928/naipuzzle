@@ -1,16 +1,21 @@
 import { ref, type Ref } from 'vue'
 
+const B = import.meta.env.BASE_URL
+
 export interface AudioAPI {
   muted: Ref<boolean>
-  preloadWin: (audioUrl: string) => Promise<void>
+  toggleMute: () => Promise<void>
   playWin: () => void
-  stopWin: () => void
+  stopAll: () => void
 }
 
 export function useAudio(): AudioAPI {
-  const muted = ref(false)
+  const muted = ref(true)
   let audioContext: AudioContext | null = null
+  let bgmBuffer: AudioBuffer | null = null
   let winBuffer: AudioBuffer | null = null
+  let bgmTimer: ReturnType<typeof setTimeout> | null = null
+  let loaded = false
 
   function getContext(): AudioContext {
     if (!audioContext) {
@@ -22,33 +27,90 @@ export function useAudio(): AudioAPI {
     return audioContext
   }
 
-  async function preloadWin(audioUrl: string): Promise<void> {
-    if (!audioUrl) return
+  function unlockIOS() {
+    const ctx = getContext()
+    const buf = ctx.createBuffer(1, 1, 22050)
+    const src = ctx.createBufferSource()
+    src.buffer = buf
+    src.connect(ctx.destination)
+    src.start(0)
+    src.stop(ctx.currentTime + 0.01)
+  }
+
+  async function loadBuffers() {
     try {
-      const response = await fetch(audioUrl)
-      const arrayBuffer = await response.arrayBuffer()
-      winBuffer = await getContext().decodeAudioData(arrayBuffer)
+      const [bgmResp, winResp] = await Promise.all([
+        fetch(`${B}assets/bgm.m4a`),
+        fetch(`${B}assets/laugh.m4a`),
+      ])
+      const ctx = getContext()
+      const [bgmData, winData] = await Promise.all([
+        bgmResp.arrayBuffer(),
+        winResp.arrayBuffer(),
+      ])
+      bgmBuffer = await ctx.decodeAudioData(bgmData)
+      winBuffer = await ctx.decodeAudioData(winData)
+      loaded = true
     } catch {
-      winBuffer = null
+      loaded = false
     }
   }
 
-  function playWin(): void {
-    if (muted.value || !winBuffer) return
+  function playBgm() {
+    if (!bgmBuffer || muted.value || !audioContext) return
     try {
-      const ctx = getContext()
-      const source = ctx.createBufferSource()
+      const source = audioContext.createBufferSource()
+      source.buffer = bgmBuffer
+      source.connect(audioContext.destination)
+      source.start(0)
+      source.onended = () => {
+        if (!muted.value) {
+          bgmTimer = setTimeout(playBgm, 1000)
+        }
+      }
+    } catch {}
+  }
+
+  function stopBgm() {
+    if (bgmTimer) {
+      clearTimeout(bgmTimer)
+      bgmTimer = null
+    }
+  }
+
+  async function toggleMute() {
+    if (muted.value) {
+      muted.value = false
+      unlockIOS()
+      if (!loaded) {
+        await loadBuffers()
+      }
+      playBgm()
+    } else {
+      muted.value = true
+      stopBgm()
+      if (audioContext) {
+        await audioContext.suspend()
+      }
+    }
+  }
+
+  function playWin() {
+    if (muted.value || !winBuffer || !audioContext) return
+    try {
+      const source = audioContext.createBufferSource()
       source.buffer = winBuffer
-      source.connect(ctx.destination)
+      source.connect(audioContext.destination)
       source.start(0)
     } catch {}
   }
 
-  function stopWin(): void {
+  function stopAll() {
+    stopBgm()
     if (audioContext) {
       audioContext.suspend().catch(() => {})
     }
   }
 
-  return { muted, preloadWin, playWin, stopWin }
+  return { muted, toggleMute, playWin, stopAll }
 }

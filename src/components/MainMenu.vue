@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { loadImageFromFile } from '../utils/imageLoader'
+import { useAudio } from '../composables/useAudio'
 import { MAX_GRID_SIZE, MIN_GRID_SIZE } from '../config'
 import { nailongPresets } from '../presets'
 import type { StartGamePayload, NailongImage } from '../types'
+
+const audio = useAudio()
 
 const emit = defineEmits<{
   start: [payload: StartGamePayload]
@@ -109,7 +112,20 @@ async function handleStart() {
 <template>
   <div class="main-menu animate-fade-in">
     <div class="menu-card">
-      <h1 class="title">naipuzzle</h1>
+      <div class="title-row">
+        <h1 class="title">naipuzzle</h1>
+        <button class="btn-mute" :class="{ active: !audio.muted.value }" @click="audio.toggleMute()">
+          <svg v-if="audio.muted.value" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </button>
+      </div>
 
       <div class="menu-section">
         <label class="menu-label">Grid Size</label>
@@ -218,6 +234,13 @@ async function handleStart() {
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: var(--radius);
 }
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 4px;
+}
 .title {
   font-size: 32px;
   font-weight: 800;
@@ -231,6 +254,27 @@ async function handleStart() {
   color: var(--color-text-dim);
   font-size: 14px;
   margin-bottom: 28px;
+}
+.btn-mute {
+  position: absolute;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  color: var(--color-text-dim);
+  transition: all var(--transition-fast);
+}
+.btn-mute:hover {
+  background: rgba(255,255,255,0.14);
+  color: var(--color-text);
+}
+.btn-mute.active {
+  color: var(--color-primary);
+  background: rgba(var(--color-primary-rgb), 0.15);
 }
 .menu-section {
   margin-bottom: 20px;

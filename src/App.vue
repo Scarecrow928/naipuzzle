@@ -56,8 +56,6 @@ async function handleStart({ columns, rows, nailong, imageRatio }: StartGamePayl
       loadedNailong = { ...nailong, imageUrl: result.url }
     }
 
-    await audio.preloadWin(loadedNailong.audioUrl).catch(() => {})
-
     puzzle.startGame(columns, rows, loadedNailong, ratio)
   } catch (err) {
     alert((err as Error).message || 'Failed to load image')
@@ -70,7 +68,7 @@ function handleRestart() {
 }
 
 function handleBackToMenu() {
-  audio.stopWin()
+  audio.stopAll()
   puzzle.backToMenu()
   timer.reset()
 }
