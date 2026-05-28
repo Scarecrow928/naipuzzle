@@ -3,14 +3,14 @@ import type { ThemeAPI } from '../types'
 
 const presets: Record<string, Record<string, string>> = {
   nailong: {
-    '--color-primary': '#c68d2f',
-    '--color-primary-rgb': '198, 141, 47',
+    '--color-primary': '#daae56',
+    '--color-primary-rgb': '218, 174, 86',
 
-    '--color-secondary': '#775a20',
-    '--color-secondary-rgb': '119, 90, 32',
+    '--color-secondary': '#75571b',
+    '--color-secondary-rgb': '117, 87, 27',
 
-    '--color-bg': '#ebce79',
-    '--color-bg-rgb': '235, 206, 121',
+    '--color-bg': '#e7d7a6',
+    '--color-bg-rgb': '231, 215, 166',
 
     '--color-surface': 'rgba(255, 255, 255, 0.7)',
     '--color-surface-hover': 'rgba(255, 255, 255, 0.9)',

@@ -53,24 +53,25 @@ function heldPieceStyle() {
 <template>
   <div class="top-bar">
     <div class="top-bar-inner">
-      <span v-if="currentImage.displayName" class="image-name">{{ currentImage.displayName }}</span>
+      <span class="image-name">{{ currentImage.displayName }}</span>
       <div class="stat">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <span>{{ formatTime(elapsedSeconds) }}</span>
       </div>
-      <div class="stat">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-        <span>{{ moves }} moves</span>
+      <div class="stat stat-moves">
+        <span>🦶{{ moves }}</span>
       </div>
-      <div v-if="heldPiece" class="held-indicator">
-        <div class="held-thumb" :style="heldPieceStyle()"></div>
-        <span v-if="isDragging" class="held-label dragging">Dragging...</span>
-        <span v-else class="held-label">Pc {{ heldPiece.pieceId }}</span>
-        <button v-if="!isDragging" class="btn btn-ghost btn-xs" @click="$emit('cancel-hold')">Cancel</button>
+      <div class="held-slot">
+        <div v-if="heldPiece" class="held-indicator">
+          <div class="held-thumb" :style="heldPieceStyle()"></div>
+          <span v-if="isDragging" class="held-label dragging">↔️</span>
+          <span v-else class="held-label">{{ heldPiece.pieceId }}</span>
+          <button v-if="!isDragging" title="Cancel" class="btn btn-ghost btn-xs" @click="$emit('cancel-hold')">✕</button>
+        </div>
       </div>
       <div class="actions">
-        <button class="btn btn-secondary btn-sm" @click="$emit('restart')">Restart</button>
-        <button class="btn btn-ghost btn-sm" @click="confirmBack">Menu</button>
+        <button title="Restart" class="btn btn-secondary btn-sm" @click="$emit('restart')">↺</button>
+        <button title="Menu" class="btn btn-ghost btn-sm" @click="confirmBack">☰</button>
       </div>
     </div>
 
@@ -95,9 +96,9 @@ function heldPieceStyle() {
   flex-shrink: 0;
 }
 .top-bar-inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
   max-width: 500px;
   margin: 0 auto;
@@ -107,6 +108,23 @@ function heldPieceStyle() {
   -webkit-backdrop-filter: blur(var(--panel-blur));
   border-radius: var(--radius);
   border: 1px solid rgba(255,255,255,0.08);
+}
+.image-name {
+  font-size: 12px;
+  color: var(--color-text-dim);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+.held-slot {
+  min-width: 0;
+}
+.held-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 .image-name {
   font-size: 12px;
@@ -155,7 +173,7 @@ function heldPieceStyle() {
   font-size: 11px;
 }
 .btn-sm {
-  padding: 4px 10px;
+  padding: 4px 8px;
   font-size: 12px;
 }
 .confirm-overlay {

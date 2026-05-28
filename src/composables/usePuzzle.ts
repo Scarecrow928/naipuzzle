@@ -18,8 +18,8 @@ const defaultNailongImage: NailongImage = {
 
 export function usePuzzle(): PuzzleAPI {
   const gameState = ref<GamePhase>(GameState.MENU)
-  const gridColumns = ref(4)
-  const gridRows = ref(4)
+  const gridColumns = ref(3)
+  const gridRows = ref(3)
   const grid = ref<(number | null)[]>([])
   const basket = ref<number[]>([])
   const heldPiece = ref<HeldPiece | null>(null)
