@@ -81,7 +81,7 @@ function heldPieceStyle() {
           <p>当前进度将丢失。<br>返回主菜单？</p>
           <div class="confirm-actions">
             <button class="btn btn-secondary" @click="cancelBack">取消</button>
-            <button class="btn btn-danger" @click="doBack">确实离开</button>
+            <button class="btn btn-danger" @click="doBack">离开</button>
           </div>
         </div>
       </div>
