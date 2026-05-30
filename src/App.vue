@@ -8,6 +8,7 @@ import { useDragDrop } from './composables/useDragDrop'
 import { loadImageFromURL } from './utils/imageLoader'
 import { gridIndexToRowCol } from './utils/puzzleMath'
 import { ThemeKey, DragKey, type StartGamePayload } from './types'
+import { initPresets } from './presets'
 import BackgroundLayer from './components/BackgroundLayer.vue'
 import MainMenu from './components/MainMenu.vue'
 import TopBar from './components/TopBar.vue'
@@ -26,6 +27,7 @@ provide(DragKey, drag)
 
 onMounted(() => {
   theme.init()
+  initPresets()
 })
 
 watch(puzzle.hasStarted, (started) => {

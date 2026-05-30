@@ -1,6 +1,7 @@
 import { ref, type Ref } from 'vue'
 
 const B = import.meta.env.BASE_URL
+const S = "https://scarecrow928.com/naipuzzle/"
 
 export interface AudioAPI {
   muted: Ref<boolean>
@@ -11,11 +12,11 @@ export interface AudioAPI {
 
 const muted = ref(true)
 
-const bgm = new Audio(`${B}assets/bgm.m4a`)
+const bgm = new Audio(`${S}assets/bgm.m4a`)
 bgm.loop = true
 bgm.volume = 0
 
-const win = new Audio(`${B}assets/laugh.m4a`)
+const win = new Audio(`${S}assets/laugh.m4a`)
 win.preload = 'auto'
 
 export function useAudio(): AudioAPI {

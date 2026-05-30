@@ -1,11 +1,13 @@
 import type { NailongImage } from './types'
 
 const B = import.meta.env.BASE_URL
+const S = "https://scarecrow928.com/naipuzzle/"
+const REMOTE_URL = `${S}listnailongimage`
 
 const D: Omit<NailongImage, 'imageUrl'> = {
   displayName: '',
   description: '',
-  audioUrl: `${B}assets/laugh.m4a`,
+  audioUrl: `${S}assets/laugh.m4a`,
 }
 
 export const nailongPresets: NailongImage[] = [
@@ -30,3 +32,18 @@ export const nailongPresets: NailongImage[] = [
   { ...D, imageUrl: `${B}assets/naijiang002.webp` },
   { ...D, imageUrl: `${B}assets/xiaoshengke.webp` },
 ]
+
+export async function initPresets() {
+  try {
+    const resp = await fetch(REMOTE_URL)
+    const data = await resp.json()
+    if (!data.success || !data.list?.length) return
+    const remote: NailongImage[] = data.list.map((item: any) => ({
+      ...D,
+      ...item,
+      displayName: item.displayName || '',
+    }))
+    nailongPresets.length = 0
+    nailongPresets.push(...remote)
+  } catch {}
+}
