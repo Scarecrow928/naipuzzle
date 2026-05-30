@@ -59,7 +59,7 @@ function pieceStyle(pieceId: number) {
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 12 15 18 9"/>
         </svg>
-        Close
+        关闭
       </button>
       <div class="basket-list" v-if="basket.length > 0">
         <div
@@ -72,7 +72,7 @@ function pieceStyle(pieceId: number) {
           <span class="basket-piece-label">{{ pieceId }}</span>
         </div>
       </div>
-      <div v-else class="basket-empty">Basket is empty</div>
+      <div v-else class="basket-empty">篮子为空</div>
     </div>
     <button
       class="basket-bar"
@@ -88,9 +88,9 @@ function pieceStyle(pieceId: number) {
         <path d="M3 12h18"/>
         <path d="M12 3v18"/>
       </svg>
-      <span v-if="heldPiece && !isBasketHovered" class="basket-label">Drop here</span>
-      <span v-else-if="isBasketHovered" class="basket-label">Release to basket</span>
-      <span v-else class="basket-label">Basket ({{ count }})</span>
+      <span v-if="heldPiece && !isBasketHovered" class="basket-label">放到这里</span>
+      <span v-else-if="isBasketHovered" class="basket-label">放入篮子</span>
+      <span v-else class="basket-label">篮子 ({{ count }})</span>
       <svg v-if="!heldPiece" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline v-if="!expanded" points="6 9 12 15 18 9"/>
         <polyline v-else points="18 15 12 9 6 15"/>

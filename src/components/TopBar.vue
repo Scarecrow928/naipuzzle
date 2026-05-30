@@ -66,22 +66,22 @@ function heldPieceStyle() {
           <div class="held-thumb" :style="heldPieceStyle()"></div>
           <span v-if="isDragging" class="held-label dragging">↔️</span>
           <span v-else class="held-label">{{ heldPiece.pieceId }}</span>
-          <button v-if="!isDragging" title="Cancel" class="btn btn-ghost btn-xs" @click="$emit('cancel-hold')">✕</button>
+          <button v-if="!isDragging" title="取消" class="btn btn-ghost btn-xs" @click="$emit('cancel-hold')">✕</button>
         </div>
       </div>
       <div class="actions">
-        <button title="Restart" class="btn btn-secondary btn-sm" @click="$emit('restart')">↺</button>
-        <button title="Menu" class="btn btn-ghost btn-sm" @click="confirmBack">☰</button>
+        <button title="重新开始" class="btn btn-secondary btn-sm" @click="$emit('restart')">↺</button>
+        <button title="菜单" class="btn btn-ghost btn-sm" @click="confirmBack">☰</button>
       </div>
     </div>
 
     <Teleport to="body">
       <div v-if="showConfirm" class="confirm-overlay" @click.self="cancelBack">
         <div class="confirm-dialog animate-fade-in-scale">
-          <p>Current progress will be lost.<br>Return to menu?</p>
+          <p>当前进度将丢失。<br>返回主菜单？</p>
           <div class="confirm-actions">
-            <button class="btn btn-secondary" @click="cancelBack">Cancel</button>
-            <button class="btn btn-danger" @click="doBack">Yes, leave</button>
+            <button class="btn btn-secondary" @click="cancelBack">取消</button>
+            <button class="btn btn-danger" @click="doBack">确实离开</button>
           </div>
         </div>
       </div>

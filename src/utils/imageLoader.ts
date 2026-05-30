@@ -3,7 +3,7 @@ import type { ImageLoadResult } from '../types'
 export function loadImageFromFile(file: File): Promise<ImageLoadResult> {
   return new Promise((resolve, reject) => {
     if (!file || !file.type.startsWith('image/')) {
-      reject(new Error('Selected file is not an image.'))
+      reject(new Error('所选文件不是图片。'))
       return
     }
     const url = URL.createObjectURL(file)
@@ -11,7 +11,7 @@ export function loadImageFromFile(file: File): Promise<ImageLoadResult> {
     img.onload = () => resolve({ url, img, ratio: img.naturalWidth / img.naturalHeight })
     img.onerror = () => {
       URL.revokeObjectURL(url)
-      reject(new Error('Failed to load image file.'))
+      reject(new Error('图片文件加载失败。'))
     }
     img.src = url
   })
@@ -20,14 +20,14 @@ export function loadImageFromFile(file: File): Promise<ImageLoadResult> {
 export function loadImageFromURL(urlString: string): Promise<ImageLoadResult> {
   return new Promise((resolve, reject) => {
     if (!urlString || !urlString.trim()) {
-      reject(new Error('Please enter a valid URL.'))
+      reject(new Error('请输入有效的网址。'))
       return
     }
     const img = new Image()
     img.crossOrigin = 'anonymous'
     img.onload = () => resolve({ url: urlString.trim(), img, ratio: img.naturalWidth / img.naturalHeight })
     img.onerror = () => {
-      reject(new Error('Failed to load image from URL. The image may be inaccessible due to CORS or the URL may be invalid.'))
+      reject(new Error('网址图片加载失败，可能是跨域限制或网址无效。'))
     }
     img.src = urlString.trim()
   })

@@ -27,19 +27,19 @@ onMounted(() => {
         :src="currentImage.imageUrl"
         alt="Completed puzzle"
       />
-      <h2 class="win-title">Completed!</h2>
+      <h2 class="win-title">完成！</h2>
       <p v-if="currentImage.displayName" class="win-name">{{ currentImage.displayName }}</p>
       <div class="win-stats">
         <div class="win-stat">
-          <span class="win-stat-label">Time</span>
+          <span class="win-stat-label">用时</span>
           <span class="win-stat-value">{{ formatTime(elapsedSeconds) }}</span>
         </div>
         <div class="win-stat">
-          <span class="win-stat-label">Moves</span>
+          <span class="win-stat-label">步数</span>
           <span class="win-stat-value">{{ moves }}</span>
         </div>
       </div>
-      <button class="btn btn-primary" @click="$emit('back-to-menu')">Back to Menu</button>
+      <button class="btn btn-primary" @click="$emit('back-to-menu')">返回主菜单</button>
     </div>
   </div>
 </template>

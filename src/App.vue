@@ -60,7 +60,7 @@ async function handleStart({ columns, rows, nailong, imageRatio }: StartGamePayl
 
     puzzle.startGame(columns, rows, loadedNailong, ratio)
   } catch (err) {
-    alert((err as Error).message || 'Failed to load image')
+    alert((err as Error).message || '图片加载失败')
   }
 }
 
